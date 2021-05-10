@@ -1,8 +1,10 @@
 #include "Joystick.h"
-#include "Arduino.h"
+
+//AXIS 1-6 PINS
+uint8_t joystickPins[] = {32, 33, 35, 36, 34, 39};
 
 void Joystick::init() {
-    for (int pin: joystickPins)
+    for (uint8_t pin: joystickPins)
         pinMode(pin, INPUT);
 }
 
@@ -19,6 +21,14 @@ void Joystick::debugJoystick() {
             String(getJoystickVal(joystickPins[4])) + " | " +
             String(getJoystickVal(joystickPins[5]))
     );
+}
+
+int* Joystick::getStates() {
+    static int states[6];
+    for (int i = 0; i < 6; ++i) {
+        states[i] = Joystick::getJoystickState(Joystick::getJoystickVal(i));
+    }
+    return states;
 }
 
 int Joystick::getJoystickState(int var) {

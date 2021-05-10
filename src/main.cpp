@@ -2,12 +2,17 @@
 #include "../lib/joystick/Joystick.h"
 #include "../lib/StepperController/StepperController.h"
 
-
 void controlWithJoystick() {
-    for (int i = 0; i < 6; ++i) {
-        int js = Joystick::getJoystickState(Joystick::getJoystickVal(i));
-        if (js != -1) StepperController::moveAxis(i, js == 0);
+    StepperMove moves[6];
+    int *states = Joystick::getStates();
+    int movesCounter = 0;
+    for (int i = 0; i < 5; ++i) {
+        if (states[i] != -1) {
+            moves[movesCounter] = StepperMove(i, states[i] == 0);
+            movesCounter++;
+        }
     }
+    StepperController::moveSteppers(moves, movesCounter);
 }
 
 void setup() {

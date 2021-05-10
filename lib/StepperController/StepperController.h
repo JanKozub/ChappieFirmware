@@ -1,3 +1,6 @@
+#include "StepperMove.h"
+#include "Arduino.h"
+
 #ifndef OCTO2_0_STEPPERCONTROLLER_H
 #define OCTO2_0_STEPPERCONTROLLER_H
 
@@ -12,14 +15,19 @@
 #define BACKWARD false
 
 class StepperController {
+private:
+    static void stepStepper(int axis);
+
+    static void stepSteppers(StepperMove steppers[], int numOfSteppers);
+
+    static void setDirection(int axis, uint8_t direction);
+
 public:
     static void init();
 
-    static void moveStepper(int axis);
+    static void moveSteppers(StepperMove steppers[], int numOfSteppers);
 
-    static void setDirection(int pin, bool type);
-
-    static void moveAxis(int axis, bool dir);
+    static void rotateByDegree(StepperMove stepperMove, int degree);
 };
 
 
