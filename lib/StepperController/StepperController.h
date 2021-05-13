@@ -1,5 +1,6 @@
 #include "StepperMove.h"
 #include "Arduino.h"
+#include "../ShiftRegister/ShiftRegister.h"
 
 #ifndef OCTO2_0_STEPPERCONTROLLER_H
 #define OCTO2_0_STEPPERCONTROLLER_H
@@ -20,12 +21,14 @@ private:
 
     static void stepSteppers(StepperMove steppers[], int numOfSteppers);
 
-    static void setDirection(int axis, uint8_t direction);
-
 public:
     static void init();
 
     static void moveSteppers(StepperMove steppers[], int numOfSteppers);
+
+    static void enableStepper(int axis);
+
+    static void disableStepper(int axis);
 
     static void rotateByDegree(StepperMove stepperMove, int degree);
 };

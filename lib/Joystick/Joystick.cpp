@@ -14,12 +14,12 @@ int Joystick::getJoystickVal(int axis) {
 
 void Joystick::debugJoystick() {
     Serial.println(
-            String(getJoystickVal(joystickPins[0])) + " | " +
-            String(getJoystickVal(joystickPins[1])) + " | " +
-            String(getJoystickVal(joystickPins[2])) + " | " +
-            String(getJoystickVal(joystickPins[3])) + " | " +
-            String(getJoystickVal(joystickPins[4])) + " | " +
-            String(getJoystickVal(joystickPins[5]))
+            String(getJoystickVal(0)) + " | " +
+            String(getJoystickVal(1)) + " | " +
+            String(getJoystickVal(2)) + " | " +
+            String(getJoystickVal(3)) + " | " +
+            String(getJoystickVal(4)) + " | " +
+            String(getJoystickVal(5))
     );
 }
 
