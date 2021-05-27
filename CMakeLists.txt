@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} lib/StepperController/StepperController.cpp lib/StepperController/StepperController.h lib/Joystick/Joystick.cpp lib/Joystick/Joystick.h lib/StepperController/StepperMove.cpp lib/StepperController/StepperMove.h lib/ShiftRegister/ShiftRegister.cpp lib/ShiftRegister/ShiftRegister.h)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST} lib/StepperController/StepperController.cpp lib/StepperController/StepperController.h lib/Joystick/Joystick.cpp lib/Joystick/Joystick.h lib/StepperController/StepperMove.cpp lib/StepperController/StepperMove.h lib/ShiftRegister/ShiftRegister.cpp lib/ShiftRegister/ShiftRegister.h lib/EncoderController/EncoderController.cpp lib/EncoderController/EncoderController.h)

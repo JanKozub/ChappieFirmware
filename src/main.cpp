@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "../lib/Joystick/Joystick.h"
 #include "../lib/StepperController/StepperController.h"
+#include "../lib/EncoderController/EncoderController.h"
 
 void controlWithJoystick() {
     StepperMove moves[6];
@@ -16,14 +17,22 @@ void controlWithJoystick() {
     StepperController::moveSteppers(moves, movesCounter);
 }
 
+EncoderController encoderController;
+
 void setup() {
     Serial.begin(9600);
+    Wire.begin();
+    Wire.setClock(800000L);
     Joystick::init();
     StepperController::init();
     ShiftRegister::init();
+    encoderController.init();
 }
 
 void loop() {
-    controlWithJoystick();
+    encoderController.getDataFromEncoder(0);
+//    controlWithJoystick();
 //    Joystick::debugJoystick();
+    Serial.println(encoderController.getPositions()[0]);
+    delay(10);
 }

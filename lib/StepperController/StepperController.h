@@ -17,11 +17,11 @@
 
 class StepperController {
 private:
-    static void stepStepper(int axis);
-
     static void stepSteppers(StepperMove steppers[], int numOfSteppers);
 
 public:
+
+    static void stepStepper(int axis, int delay);
     static void init();
 
     static void moveSteppers(StepperMove steppers[], int numOfSteppers);
