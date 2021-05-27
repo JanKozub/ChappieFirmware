@@ -1,5 +1,6 @@
 #include "StepperMove.h"
 #include "Arduino.h"
+#include "../Joystick/Joystick.h"
 #include "../ShiftRegister/ShiftRegister.h"
 
 #ifndef OCTO2_0_STEPPERCONTROLLER_H
@@ -16,21 +17,28 @@
 #define BACKWARD false
 
 class StepperController {
+
 private:
-    static void stepSteppers(StepperMove steppers[], int numOfSteppers);
+    void stepSteppers(StepperMove steppers[], int numOfSteppers);
+
+    uint8_t pulsePins[6] = {12, 4, 14, 5, 23, 17};
+    int microstepsTable[6] = {0, 0, 0, 42271, 42271, 42271}; //microsteps needed to rotate full 360 deg
 
 public:
 
-    static void stepStepper(int axis, int delay);
-    static void init();
+    void stepStepper(int axis, int delay);
 
-    static void moveSteppers(StepperMove steppers[], int numOfSteppers);
+    void init();
+
+    void moveSteppers(StepperMove steppers[], int numOfSteppers);
+
+    void controlWithJoystick();
 
     static void enableStepper(int axis);
 
     static void disableStepper(int axis);
 
-    static void rotateByDegree(StepperMove stepperMove, int degree);
+    void rotateByDegree(StepperMove stepperMove, int degree);
 };
 
 

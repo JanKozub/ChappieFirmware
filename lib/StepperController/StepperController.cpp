@@ -1,11 +1,12 @@
 #include "StepperController.h"
 
-uint8_t pulsePins[] = {12, 4, 14, 5, 23, 17};
-int microstepsTable[6] = {0, 0, 0, 42271, 42271, 42271}; //microsteps needed to rotate full 360 deg
-int rotationSpeed = 40;
-int dupa[] = {500, 450, 400, 350, 300, 250, 200, 150, 75, 50};
+Joystick joystick;
+ShiftRegister shiftRegister;
 
 void StepperController::init() {
+    joystick.init();
+    shiftRegister.init();
+
     for (uint8_t pulsePin : pulsePins)
         pinMode(pulsePin, OUTPUT);
 }
@@ -30,14 +31,28 @@ void StepperController::stepSteppers(StepperMove steppers[], int numOfSteppers) 
 
 void StepperController::moveSteppers(StepperMove steppers[], int numOfSteppers) {
     for (int i = 0; i < numOfSteppers; ++i) {
-        ShiftRegister::setDirPin(steppers[i].axis, steppers[i].direction);
+        shiftRegister.setDirPin(steppers[i].axis, steppers[i].direction);
     }
 
     StepperController::stepSteppers(steppers, numOfSteppers);
 }
 
+void StepperController::controlWithJoystick() {
+    StepperMove moves[6];
+    int *states = joystick.getStates();
+    int movesCounter = 0;
+    for (int i = 0; i < 6; ++i) {
+        if (states[i] != -1) {
+            moves[movesCounter] = StepperMove(i, states[i] == 0);
+            movesCounter++;
+        }
+    }
+
+    StepperController::moveSteppers(moves, movesCounter);
+}
+
 void StepperController::rotateByDegree(StepperMove stepperMove, int degree) {
-    ShiftRegister::setDirPin(stepperMove.axis, (uint8_t) stepperMove.direction);
+    shiftRegister.setDirPin(stepperMove.axis, (uint8_t) stepperMove.direction);
 
     int pulseTime = 50;
 
@@ -59,9 +74,9 @@ void StepperController::rotateByDegree(StepperMove stepperMove, int degree) {
 }
 
 void StepperController::enableStepper(int axis) {
-    ShiftRegister::setEnPin(axis, false);
+    shiftRegister.setEnPin(axis, false);
 }
 
 void StepperController::disableStepper(int axis) {
-    ShiftRegister::setEnPin(axis, true);
+    shiftRegister.setEnPin(axis, true);
 }

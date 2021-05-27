@@ -9,8 +9,6 @@
 
 
 class EncoderController {
-public:
-    EncoderController();
 
 private:
     double startPositions[6] = {0, 0, 0, 0, 0, 0};

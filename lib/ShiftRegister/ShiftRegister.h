@@ -10,15 +10,15 @@
 class ShiftRegister {
 public:
 
-    static void init();
+    void init();
 
-    static void setDirPin(int axis, bool state);
+    void setDirPin(int axis, bool state);
 
-    static void setEnPin(int axis, bool state);
+    void setEnPin(int axis, bool state);
 
 private:
 
-    static void writeReg(int pin, bool state);
+    void writeReg(int pin, bool state);
 };
 
 

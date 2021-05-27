@@ -1,7 +1,7 @@
 #include "Joystick.h"
 
 //AXIS 1-6 PINS
-uint8_t joystickPins[] = {32, 33, 35, 36, 34, 39};
+
 
 void Joystick::init() {
     for (uint8_t pin: joystickPins)

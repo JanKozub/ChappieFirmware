@@ -1,7 +1,5 @@
 #include "EncoderController.h"
 
-EncoderController::EncoderController() = default;
-
 void EncoderController::init() {
     for (int i = 0; i < 5; ++i) {
         startPositions[i] = getRawData(i);
