@@ -2,6 +2,7 @@
 #include "Arduino.h"
 #include "../Joystick/Joystick.h"
 #include "../ShiftRegister/ShiftRegister.h"
+#include "../EncoderController/EncoderController.h"
 
 #ifndef OCTO2_0_STEPPERCONTROLLER_H
 #define OCTO2_0_STEPPERCONTROLLER_H

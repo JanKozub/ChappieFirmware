@@ -22,11 +22,11 @@ private:
 public:
     void init();
 
-    const double *getPositions();
+    double getPosition(int axis) volatile;
 
-    double getRawData(int axis);
+    double getRawData(int axis) volatile;
 
-    void getDataFromEncoder(int axis);
+    void getDataFromEncoder(int axis) volatile;
 };
 
 
