@@ -3,19 +3,24 @@
 #define IS_AXIS_VALID(axis) ((axis) >= 0 && (axis) <= 5)
 
 void EncoderController::init() {
-    for (int i = 0; i < 5; ++i) {
-        startPositions[i] = getRawData(i);
+    getConnectedEncoders();
+
+    for (int i = 0; i < 6; ++i) {
+        if (isEncoderConnected(i)) {
+            setDataLine(i + 2);
+            startPositions[i] = getRawData(i);
+        }
     }
 }
 
-double EncoderController::getRawData(int axis) volatile {
+double EncoderController::getRawData(int axis) {
     if (IS_AXIS_VALID(axis)) {
-        sendData(addresses[axis], 0x0D);
+        sendData(0x0D);
 
         while (Wire.available() == 0);
         unsigned int lowByte = Wire.read();
 
-        sendData(addresses[axis], 0x0C);
+        sendData(0x0C);
 
         while (Wire.available() == 0);
         word highByte = Wire.read();
@@ -26,7 +31,7 @@ double EncoderController::getRawData(int axis) volatile {
         return -1;
 }
 
-void EncoderController::getDataFromEncoder(int axis) volatile {
+void EncoderController::getEncoderData(int axis) volatile {
     if (IS_AXIS_VALID(axis)) {
         double correctedAngle = getRawData(axis) - startPositions[axis];
         if (correctedAngle < 0)
@@ -53,20 +58,72 @@ void EncoderController::getDataFromEncoder(int axis) volatile {
             }
             previousQuadrantNumber[axis] = quadrantNumber;
         }
-        positions[axis] = (((numberOfTurns[axis] * 360) + correctedAngle) * 0.24) * 0.24;
+        positions[axis] = ((numberOfTurns[axis] * 360) + correctedAngle) * 0.04449785;
     }
 }
 
-double EncoderController::getPosition(int axis) volatile {
+void EncoderController::updateEncodersValues() volatile {
+    for (int i = 0; i < 6; ++i) {
+        if (isEncoderConnected(i)) {
+            setDataLine(i + 2);
+            getEncoderData(i);
+        }
+    }
+}
+
+__attribute__((unused)) double EncoderController::getPosition(int axis) volatile {
     if (IS_AXIS_VALID(axis))
         return positions[axis];
     else
         return -1;
 }
 
-void EncoderController::sendData(int address, int message) {
-    Wire.beginTransmission(address);
+void EncoderController::getConnectedEncoders() {
+    for (uint8_t dataLine = 0; dataLine < 8; dataLine++) {
+        setDataLine(dataLine);
+
+        Wire.beginTransmission(54); //address 0x36
+        if (!Wire.endTransmission()) {
+            encodersStatuses[dataLine - 2] = 1;
+        }
+    }
+}
+
+void EncoderController::sendData(int message) {
+    Wire.beginTransmission(ENCODER_ADDR);
     Wire.write(message);
     Wire.endTransmission();
-    Wire.requestFrom(address, 1);
+    Wire.requestFrom(ENCODER_ADDR, 1);
+}
+
+void EncoderController::setDataLine(uint8_t line) {
+    if (line < 8) {
+        Wire.beginTransmission(MULTIPLEXER_ADDR);
+        Wire.write(1 << line);
+        Wire.endTransmission();
+    }
+}
+
+bool EncoderController::isEncoderConnected(int axis) volatile {
+    return encodersStatuses[axis] == 1;
+}
+
+void EncoderController::printConnectedEncoders() {
+    Serial.println("Connected encoders:");
+    Serial.println("-------------------");
+    Serial.println("PORT | CONNECTED");
+    for (int i = 0; i < 6; i++) {
+        Serial.print(i + 1);
+        Serial.print("    | ");
+        Serial.println(encodersStatuses[i] == 1 ? "YES" : "NO");
+    }
+    Serial.println("-------------------");
+}
+
+void EncoderController::printCurrentPositions() {
+    for (double position : positions) {
+        Serial.print(position);
+        Serial.print(", ");
+    }
+    Serial.println("");
 }

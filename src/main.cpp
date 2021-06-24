@@ -9,7 +9,7 @@ TaskHandle_t Core2Task;
 
 [[noreturn]] void core2Task(void * pvParameters ){
     for (;;) {
-        encoderController.getDataFromEncoder(0);
+        encoderController.updateEncodersValues();
     }
 }
 
@@ -23,11 +23,12 @@ void setup() {
 
     xTaskCreatePinnedToCore(core2Task,"core2Task",10000,nullptr,1,&Core2Task,1);
 
-    Serial.println(encoderController.getPosition(AX1));
-    stepperController.rotateByDegree(StepperMove(AX5, FORWARD), 90);
+    encoderController.printConnectedEncoders();
+
+    encoderController.printCurrentPositions();
 }
 
 void loop() {
     stepperController.controlWithJoystick();
-//    Serial.println(encoderController.getPosition(AX1));
+    encoderController.printCurrentPositions();
 }

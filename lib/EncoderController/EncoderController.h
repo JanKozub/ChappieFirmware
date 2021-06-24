@@ -7,6 +7,8 @@
 #ifndef CHAPPIEFIRMWARE_ENCODERCONTROLLER_H
 #define CHAPPIEFIRMWARE_ENCODERCONTROLLER_H
 
+#define MULTIPLEXER_ADDR 0x70
+#define ENCODER_ADDR 0x36
 
 class EncoderController {
 
@@ -14,19 +16,32 @@ private:
     double startPositions[6] = {0, 0, 0, 0, 0, 0};
     double positions[6] = {0, 0, 0, 0, 0, 0};
     double numberOfTurns[6] = {0, 0, 0, 0, 0, 0};
-    int addresses[6] = {0x36, 0x36, 0x36, 0x36, 0x36, 0x36};
     int previousQuadrantNumber[6] = {0, 0, 0, 0, 0, 0};
+    int encodersStatuses[6] = {0, 0, 0, 0, 0, 0};
 
-    static void sendData(int address, int message);
+    static double getRawData(int axis);
+
+    static void sendData(int message);
+
+    static void setDataLine(uint8_t line);
+
+    void getConnectedEncoders();
+
+    void getEncoderData(int axis) volatile;
+
+    bool isEncoderConnected(int axis) volatile;
 
 public:
+
     void init();
 
-    double getPosition(int axis) volatile;
+    __attribute__((unused)) double getPosition(int axis) volatile;
 
-    double getRawData(int axis) volatile;
+    void updateEncodersValues() volatile;
 
-    void getDataFromEncoder(int axis) volatile;
+    void printConnectedEncoders();
+
+    void printCurrentPositions();
 };
 
 
