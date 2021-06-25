@@ -30,5 +30,5 @@ void setup() {
 
 void loop() {
     stepperController.controlWithJoystick();
-    encoderController.printCurrentPositions();
+//    encoderController.printCurrentPositions();
 }

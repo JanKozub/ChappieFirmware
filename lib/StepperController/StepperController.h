@@ -3,6 +3,7 @@
 #include "../Joystick/Joystick.h"
 #include "../ShiftRegister/ShiftRegister.h"
 #include "../EncoderController/EncoderController.h"
+#include "../Pinout.h"
 
 #ifndef OCTO2_0_STEPPERCONTROLLER_H
 #define OCTO2_0_STEPPERCONTROLLER_H
@@ -22,7 +23,9 @@ class StepperController {
 private:
     void stepSteppers(StepperMove steppers[], int numOfSteppers);
 
-    uint8_t pulsePins[6] = {12, 4, 14, 5, 23, 17};
+    uint8_t pulsePins[6] = {AXIS_1_PUL_PIN, AXIS_2_PUL_PIN, AXIS_3_PUL_PIN,
+                            AXIS_4_PUL_PIN, AXIS_5_PUL_PIN, AXIS_6_PUL_PIN};
+
     int microstepsTable[6] = {0, 0, 0, 42271, 42271, 42271}; //microsteps needed to rotate full 360 deg
 
 public:

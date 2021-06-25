@@ -1,14 +1,9 @@
 #include "Arduino.h"
 #include "Wire.h"
-
-//ENCODER AS5600
-//DEFAULT ADDRESS 0x36
+#include "../Pinout.h"
 
 #ifndef CHAPPIEFIRMWARE_ENCODERCONTROLLER_H
 #define CHAPPIEFIRMWARE_ENCODERCONTROLLER_H
-
-#define MULTIPLEXER_ADDR 0x70
-#define ENCODER_ADDR 0x36
 
 class EncoderController {
 

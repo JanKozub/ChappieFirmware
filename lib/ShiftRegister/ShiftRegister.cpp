@@ -12,23 +12,23 @@ void ShiftRegister::init() {
         registerState[i] = 0;
     }
 
-    pinMode(latchPin, OUTPUT);
-    pinMode(clockPin, OUTPUT);
-    pinMode(dataPin, OUTPUT);
+    pinMode(LATCH_PIN, OUTPUT);
+    pinMode(CLOCK_PIN, OUTPUT);
+    pinMode(DATA_PIN, OUTPUT);
 }
 
 void ShiftRegister::writeReg(int pin, bool state) {
     int reg = pin / 8;
 
-    digitalWrite(latchPin, LOW);
+    digitalWrite(LATCH_PIN, LOW);
     for (int i = 0; i < 2; i++){
         byte* states = &registerState[i];
         if (i == reg){
             bitWrite(*states, pin - (8 * reg), state);
         }
-        shiftOut(dataPin, clockPin, MSBFIRST, *states);
+        shiftOut(DATA_PIN, CLOCK_PIN, MSBFIRST, *states);
     }
-    digitalWrite(latchPin, HIGH);
+    digitalWrite(LATCH_PIN, HIGH);
 }
 
 void ShiftRegister::setDirPin(int axis, bool state) {

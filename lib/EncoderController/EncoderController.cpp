@@ -121,9 +121,10 @@ void EncoderController::printConnectedEncoders() {
 }
 
 void EncoderController::printCurrentPositions() {
-    for (double position : positions) {
-        Serial.print(position);
-        Serial.print(", ");
-    }
+//    for (double position : positions) {
+//        Serial.print(position);
+//        Serial.print(", ");
+//    }
+    Serial.print(positions[5]);
     Serial.println("");
 }

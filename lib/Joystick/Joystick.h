@@ -1,13 +1,16 @@
 #include "Arduino.h"
+#include "../Pinout.h"
 
 #ifndef OCTO2_0_JOYSTICK_H
 #define OCTO2_0_JOYSTICK_H
 
 class Joystick {
 private:
-    uint8_t joystickPins[6] = {32, 33, 35, 36, 34, 39};
+    uint8_t joystickPins[6] = {JOYSTICK_PIN_1, JOYSTICK_PIN_2, JOYSTICK_PIN_3,
+                               JOYSTICK_PIN_4, JOYSTICK_PIN_5, JOYSTICK_PIN_6};
 
     static int getJoystickState(int var);
+
 public:
 
     void init();
